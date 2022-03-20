@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { GET_AUTHORS } from '../components/queries'
+import UpdateAuthor from './UpdateAuthor'
 
 const Authors = (props) => {
   const fetchAuth = useQuery(GET_AUTHORS)
@@ -33,6 +34,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <UpdateAuthor />
     </div>
   )
 }
