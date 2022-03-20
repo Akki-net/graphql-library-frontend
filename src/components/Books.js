@@ -1,9 +1,18 @@
+import { useQuery } from '@apollo/client'
+import { GET_BOOKS } from '../components/queries'
+
 const Books = (props) => {
+  const fetchBook = useQuery(GET_BOOKS)
+
   if (!props.show) {
     return null
   }
 
-  const books = [...props.books]
+  if(fetchBook.loading){
+    return <div>...loading</div>
+  }
+
+  const books = [...fetchBook.data.allBooks]
 
   return (
     <div>
