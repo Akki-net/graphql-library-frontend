@@ -3,13 +3,15 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import { useQuery } from '@apollo/client'
-import { GET_AUTHORS } from './components/queries'
+import { GET_AUTHORS, GET_BOOKS } from './components/queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
 
   const fetchAuth = useQuery(GET_AUTHORS)
-  if(fetchAuth.loading){
+  const fetchBook = useQuery(GET_BOOKS)
+
+  if(fetchAuth.loading || fetchBook.loading){
     return <div>loading...</div>
   }
   
@@ -23,7 +25,7 @@ const App = () => {
 
       <Authors show={page === 'authors'} authors={fetchAuth.data.allAuthors}/>
 
-      <Books show={page === 'books'} />
+      <Books show={page === 'books'} books={fetchBook.data.allBooks} />
 
       <NewBook show={page === 'add'} />
     </div>
