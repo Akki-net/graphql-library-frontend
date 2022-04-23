@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, createContext } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
+
+const ErrorContext = createContext([{}, () => { }])
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -21,7 +23,7 @@ const App = () => {
     setErrorMessage(message)
     setTimeout(() => {
       setErrorMessage(null)
-    }, 10000)
+    }, 3000)
   }
 
   const logOut = (e) => {
@@ -43,7 +45,9 @@ const App = () => {
           <button onClick={() => setPage('add')}>add book</button>
         </div>
 
-        <Authors show={page === 'authors'} />
+        <ErrorContext.Provider value={[errorMessage, setErrorMessage]}>
+          <Authors show={page === 'authors'} />
+        </ErrorContext.Provider>
 
         <Books show={page === 'books'} />
 
@@ -66,3 +70,4 @@ const Notify = ({ errorMessage }) => {
 }
 
 export default App
+export { ErrorContext }
