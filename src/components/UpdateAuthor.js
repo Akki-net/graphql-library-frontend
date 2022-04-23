@@ -10,13 +10,17 @@ const UpdateAuthor = () => {
         refetchQueries: [{ query: GET_AUTHORS }]
     })
 
+    React.useMemo(() => {
+        setName(fetchAuth.data.allAuthors[0].name)
+    }, [fetchAuth.data])
+
     if (fetchAuth.loading) {
         return <div>...loading</div>
     }
 
+
     const submit = event => {
         event.preventDefault()
-
         setAuthorBirth({ variables: { name, setBornTo: Number(birth) } })
 
         setName('')
@@ -28,12 +32,12 @@ const UpdateAuthor = () => {
             <h3>Set birthyear</h3>
             <form onSubmit={submit}>
                 <select value={name} onChange={({ target }) => setName(target.value)}>
-                    {fetchAuth.data.allAuthors.map(author => <option value={author.name}>
+                    {fetchAuth.data.allAuthors.map((author, i) => <option key={i} value={author.name}>
                         {author.name}
                     </option>)}
                 </select><br/>
                 {/* <input value={name} onChange={({ target }) => setName(target.value)} /><br /> */}
-                <input value={birth} maxLength="4" onChange={({ target }) => !isNaN(target.value) && setBirth(target.value)} /><br />
+                born<input value={birth} maxLength="4" onChange={({ target }) => !isNaN(target.value) && setBirth(target.value)} /><br />
                 <button type="submit">update author</button>
             </form>
         </div>
