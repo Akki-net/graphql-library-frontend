@@ -13,7 +13,17 @@ const NewBook = (props) => {
     onError: error => {
       props.setError(error.graphQLErrors[0].message)
     },
-    refetchQueries: [{ query: GET_BOOKS }, { query: GET_AUTHORS }]
+    refetchQueries: [
+      { query: GET_BOOKS }, 
+      { query: GET_AUTHORS }
+    ],
+    // update: (cache, response) => {
+    //   cache.updateQuery({ query: GET_AUTHORS }, ({ allAuthors }) => {
+    //     // return allBooks.concat(response.data.addBook)
+    //     return { allAuthors: allAuthors.map(author => author.name === response.data.addBook.author ? { ...author, bookCount: author.bookCount + 1 } : author) }
+    //   })
+    // },
+    // fetchPolicy: 'no-cache'
   })
 
   if (!props.show) {
@@ -25,7 +35,7 @@ const NewBook = (props) => {
 
     console.log('add book...')
 
-    addBook({variables: { title, published: Number(published), author, genres }})
+    addBook({ variables: { title, published: Number(published), author, genres } })
 
     setTitle('')
     setPublished('')

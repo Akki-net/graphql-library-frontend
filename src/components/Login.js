@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { LOGIN_FORM } from './queries'
 import { useMutation } from '@apollo/client'
 
-function Login({ loginStat }) {
+function Login({ loginStat, setError }) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [loggingIn, result] = useMutation(LOGIN_FORM)
+    const [loggingIn, result] = useMutation(LOGIN_FORM, {
+        onError: (error) => {
+            setError(error.graphQLErrors[0].message)
+        }
+    })
 
     useEffect(() => {
         if (result.data && result.data.login) {
             window.localStorage.setItem('loggedInUser', JSON.stringify({ username, token: result.data.login.value }))
-            loginStat(true)
+            loginStat(result.data.login.value)
         }
     }, [result.data])
 

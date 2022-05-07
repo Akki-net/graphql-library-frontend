@@ -4,7 +4,7 @@ import { SET_BIRTH, GET_AUTHORS } from './queries'
 import { ErrorContext } from '../App'
 
 const UpdateAuthor = () => {
-    const [errorMessage, setErrorMessage] = useContext(ErrorContext)
+    const [setErrorMessage] = useContext(ErrorContext)
     const [name, setName] = useState('')
     const [birth, setBirth] = useState('')
     const fetchAuth = useQuery(GET_AUTHORS)
@@ -16,7 +16,8 @@ const UpdateAuthor = () => {
     })
 
     React.useMemo(() => {
-        setName(fetchAuth.data.allAuthors[0].name)
+        if (fetchAuth.data && fetchAuth.data.allAuthors.length > 0)
+            setName(fetchAuth.data.allAuthors[0].name)
     }, [fetchAuth.data])
 
     if (fetchAuth.loading) {
