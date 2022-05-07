@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_AUTHORS } from '../components/queries'
 import UpdateAuthor from './UpdateAuthor'
@@ -7,9 +7,10 @@ const Authors = (props) => {
   const [authors, setAuthors] = useState([])
   const fetchAuth = useQuery(GET_AUTHORS)
 
-  useEffect(() => {
-    setAuthors(fetchAuth.data.allAuthors)
-  }, [props.show, fetchAuth.data])
+  React.useMemo(() => {
+    if (fetchAuth.data && fetchAuth.data.allAuthors.length > 0)
+      setAuthors(fetchAuth.data.allAuthors)
+  }, [fetchAuth.data])
 
   if (!props.show) {
     return null
